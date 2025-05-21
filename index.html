@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chalklet – Schokoriegel in Kreidenform</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #fffdf9;
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #5e4b3c;
+      color: white;
+      padding: 10px 20px;
+    }
+
+    header img {
+      height: 50px;
+      cursor: pointer;
+    }
+
+    nav {
+      display: none;
+      flex-direction: column;
+      background-color: #eee;
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      margin: 5px 0;
+    }
+
+    .menu-button {
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .produkte {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .produkt {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .einzelansicht {
+      display: none;
+      text-align: center;
+    }
+
+    .produktbild {
+      width: 300px;
+      height: 300px;
+      margin: 20px auto;
+      background: url("https://via.placeholder.com/300x300") center/cover no-repeat;
+      border-radius: 16px;
+    }
+
+    .beschreibung {
+      font-size: 1.1em;
+      margin: 10px auto;
+      max-width: 600px;
+    }
+
+    .preis {
+      font-weight: bold;
+      font-size: 1.4em;
+      margin: 10px 0;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #999;
+      font-size: 0.9em;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="https://i.imgur.com/JbDQXX3.png" alt="Chalklet Logo" onclick="showSection('home')" />
+  <button class="menu-button" onclick="toggleMenu()">☰</button>
+  <nav id="menu">
+    <a href="#" onclick="showSection('home')">Produkte</a>
+    <a href="#ueber-uns">Über uns</a>
+  </nav>
+</header>
+
+<main>
+  <section id="home">
+    <h1>Zum Schreiben zu schade, zum Naschen perfekt.</h1>
+    <h2>Produkte</h2>
+    <div class="produkte">
+      <div class="produkt" onclick="showProduct('classicgross')">
+        <h3>Chalklet Classic (200g)</h3>
+        <p>3.5 CHF</p>
+      </div>
+      <div class="produkt" onclick="showProduct('classicklein')">
+        <h3>Chalklet Classic (100g)</h3>
+        <p>2 CHF</p>
+      </div>
+      <div class="produkt" onclick="showProduct('editiongross')">
+        <h3>Monatsedition (200g)</h3>
+        <p>4 CHF</p>
+      </div>
+      <div class="produkt" onclick="showProduct('editionklein')">
+        <h3>Monatsedition (100g)</h3>
+        <p>2.5 CHF</p>
+      </div>
+    </div>
+
+    <section id="ueber-uns" style="margin-top: 50px;">
+      <h2>Über uns</h2>
+      <p>Chalklet ist ein innovatives Schokoladenunternehmen, das Kreideformen zum Naschen herstellt – kreativ, lecker und jeden Monat neu!</p>
+    </section>
+  </section>
+
+  <!-- Einzelansichten -->
+  <section class="einzelansicht" id="classicgross">
+    <h2>Chalklet Classic (200g)</h2>
+    <div class="produktbild"></div>
+    <p class="beschreibung">Die klassische Milchschokolade in Kreideform. Ideal zum Naschen oder Verschenken.</p>
+    <p class="preis">3.5 CHF</p>
+  </section>
+
+  <section class="einzelansicht" id="classicklein">
+    <h2>Chalklet Classic (100g)</h2>
+    <div class="produktbild"></div>
+    <p class="beschreibung">Der kleine Klassiker: Milchschokolade in Schreibform für zwischendurch.</p>
+    <p class="preis">2 CHF</p>
+  </section>
+
+  <section class="einzelansicht" id="editiongross">
+    <h2>Monatsedition (200g)</h2>
+    <div class="produktbild"></div>
+    <p class="beschreibung">Jeden Monat ein neues Geschmackserlebnis – von Chili bis Spekulatius. Ideal für Genießer!</p>
+    <p class="preis">4 CHF</p>
+  </section>
+
+  <section class="einzelansicht" id="editionklein">
+    <h2>Monatsedition (100g)</h2>
+    <div class="produktbild"></div>
+    <p class="beschreibung">Die monatliche Spezialität in der handlichen 100g-Größe. Monatlich wechselnde Sorten!</p>
+    <p class="preis">2.5 CHF</p>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 Chalklet. Alle Rechte vorbehalten.
+</footer>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+  }
+
+  function showSection(sectionId) {
+    document.getElementById("home").style.display = "block";
+    document.querySelectorAll(".einzelansicht").forEach(el => el.style.display = "none");
+    window.scrollTo(0, 0);
+  }
+
+  function showProduct(productId) {
+    document.getElementById("home").style.display = "none";
+    document.querySelectorAll(".einzelansicht").forEach(el => el.style.display = "none");
+    document.getElementById(productId).style.display = "block";
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>

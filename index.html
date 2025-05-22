@@ -133,12 +133,9 @@
     <div id="cartItems"></div>
     <div class="gesamt" id="total">Total: 0 CHF</div>
     <div style="text-align: right; margin-top: 15px;">
-  <button onclick="alert('Vielen Dank für deinen Einkauf! (Leider ist diese Marke nur zu Lernzwecken und hat keine reale Produktion.)')">
-    Jetzt kaufen
-  </button>
+  <button onclick="goToThankYou()">Jetzt kaufen</button>
 </div>
 
-  </div>
 
   <!-- Warenkorb Script -->
   <script>
@@ -184,5 +181,15 @@
     }
   </script>
 
+<script>
+  function goToThankYou() {
+    // Leert den Warenkorb (optional)
+    cart.length = 0;
+    updateCart();
+    // Leitet zur Dankesseite weiter
+    window.location.href = "thankyou.html";
+  }
+</script>
+    
 </body>
 </html>

@@ -3,207 +3,183 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chalklet – Schokoriegel in Kreidenform</title>
+  <title>Chalklet Onlineshop</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
+      background-color: #fffdf9;
       margin: 0;
-      background: #fffdf9;
-      color: #333;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #5e4b3c;
-      color: white;
-      padding: 10px 20px;
-    }
-
-    header img {
-      height: 50px;
-      cursor: pointer;
-    }
-
-    nav {
-      display: none;
-      flex-direction: column;
-      background-color: #eee;
-      position: absolute;
-      top: 60px;
-      right: 10px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #333;
-      margin: 5px 0;
-    }
-
-    .menu-button {
-      font-size: 24px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    main {
       padding: 20px;
     }
-
-    h1, h2 {
+    header {
       text-align: center;
+      margin-bottom: 30px;
     }
-
-    .produkte {
+    header img {
+      width: 200px;
+      height: auto;
+    }
+    h1 {
+      font-size: 2em;
+    }
+    .produkt-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto 40px;
     }
-
     .produkt {
-      border: 1px solid #ccc;
-      padding: 10px;
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 15px;
       text-align: center;
-      border-radius: 8px;
-      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .produkt img {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    .produkt h3 {
+      margin: 10px 0 5px;
+    }
+    .produkt p {
+      margin: 5px 0;
+    }
+    button {
+      padding: 8px 12px;
+      margin-top: 10px;
+      background-color: #593c1f;
+      color: white;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
     }
-
-    .einzelansicht {
-      display: none;
-      text-align: center;
+    button:hover {
+      background-color: #402c16;
     }
-
-    .produktbild {
-      width: 300px;
-      height: 300px;
-      margin: 20px auto;
-      background: url("https://i.imgur.com/aKta5Gr.jpeg") center/cover no-repeat;
-      border-radius: 16px;
-    }
-
-    .beschreibung {
-      font-size: 1.1em;
-      margin: 10px auto;
+    .warenkorb {
       max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
     }
-
-    .preis {
-      font-weight: bold;
-      font-size: 1.4em;
-      margin: 10px 0;
-    }
-
-    footer {
-      margin-top: 40px;
+    .warenkorb h2 {
       text-align: center;
-      color: #999;
-      font-size: 0.9em;
     }
-
-    .hidden {
-      display: none;
+    .warenkorb-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .gesamt {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <img src="https://i.imgur.com/dnYIxdj.png" alt="Chalklet Logo" onclick="showSection('home')" />
-  <button class="menu-button" onclick="toggleMenu()">☰</button>
-  <nav id="menu">
-    <a href="#" onclick="showSection('home')">Produkte</a>
-    <a href="#ueber-uns">Über uns</a>
-  </nav>
-</header>
-
-<main>
-  <section id="home">
+  <header>
+    <img src="https://i.imgur.com/Xx7aVjM.png" alt="Chalklet Logo" />
     <h1>Zum Schreiben zu schade, zum Naschen perfekt.</h1>
-    <h2>Produkte</h2>
-    <div class="produkte">
-      <div class="produkt" onclick="showProduct('classicgross')">
-        <h3>Chalklet Classic (200g)</h3>
-        <p>3.5 CHF</p>
-      </div>
-      <div class="produkt" onclick="showProduct('classicklein')">
-        <h3>Chalklet Classic (100g)</h3>
-        <p>2 CHF</p>
-      </div>
-      <div class="produkt" onclick="showProduct('editiongross')">
-        <h3>Monatsedition (200g)</h3>
-        <p>4 CHF</p>
-      </div>
-      <div class="produkt" onclick="showProduct('editionklein')">
-        <h3>Monatsedition (100g)</h3>
-        <p>2.5 CHF</p>
-      </div>
+  </header>
+
+  <section class="produkt-container">
+    <!-- Classic groß -->
+    <div class="produkt">
+      <img src="https://via.placeholder.com/200x150.png?text=Classic+200g" alt="Classic groß" />
+      <h3>Chalklet Classic – 200g</h3>
+      <p>Milchschokolade</p>
+      <p><strong>3.50 CHF</strong></p>
+      <button onclick="addToCart('Classic 200g', 3.5)">In den Warenkorb</button>
     </div>
 
-    <section id="ueber-uns" style="margin-top: 50px;">
-      <h2>Über uns</h2>
-      <p>Chalklet ist ein innovatives Schokoladenunternehmen, das Kreideformen zum Naschen herstellt – kreativ, lecker und jeden Monat neu!</p>
-    </section>
+    <!-- Classic klein -->
+    <div class="produkt">
+      <img src="https://via.placeholder.com/200x150.png?text=Classic+100g" alt="Classic klein" />
+      <h3>Chalklet Classic – 100g</h3>
+      <p>Milchschokolade</p>
+      <p><strong>2.00 CHF</strong></p>
+      <button onclick="addToCart('Classic 100g', 2)">In den Warenkorb</button>
+    </div>
+
+    <!-- Monatsedition groß -->
+    <div class="produkt">
+      <img src="https://via.placeholder.com/200x150.png?text=Edition+200g" alt="Edition groß" />
+      <h3>Monatsedition – 200g</h3>
+      <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
+      <p><strong>4.00 CHF</strong></p>
+      <button onclick="addToCart('Edition 200g', 4)">In den Warenkorb</button>
+    </div>
+
+    <!-- Monatsedition klein -->
+    <div class="produkt">
+      <img src="https://via.placeholder.com/200x150.png?text=Edition+100g" alt="Edition klein" />
+      <h3>Monatsedition – 100g</h3>
+      <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
+      <p><strong>2.50 CHF</strong></p>
+      <button onclick="addToCart('Edition 100g', 2.5)">In den Warenkorb</button>
+    </div>
   </section>
 
-  <!-- Einzelansichten -->
-  <section class="einzelansicht" id="classicgross">
-    <h2>Chalklet Classic (200g)</h2>
-    <div class="produktbild"></div>
-    <p class="beschreibung">Die klassische Milchschokolade in Kreideform. Ideal zum Naschen oder Verschenken.</p>
-    <p class="preis">3.5 CHF</p>
-  </section>
+  <!-- Warenkorb -->
+  <div class="warenkorb">
+    <h2>🛒 Warenkorb</h2>
+    <div id="cartItems"></div>
+    <div class="gesamt" id="total">Total: 0 CHF</div>
+    <div style="text-align: right; margin-top: 15px;">
+      <button onclick="checkout()">Zur Kasse</button>
+    </div>
+  </div>
 
-  <section class="einzelansicht" id="classicklein">
-    <h2>Chalklet Classic (100g)</h2>
-    <div class="produktbild"></div>
-    <p class="beschreibung">Der kleine Klassiker: Milchschokolade in Schreibform für zwischendurch.</p>
-    <p class="preis">2 CHF</p>
-  </section>
+  <!-- Warenkorb Script -->
+  <script>
+    const cart = [];
 
-  <section class="einzelansicht" id="editiongross">
-    <h2>Monatsedition (200g)</h2>
-    <div class="produktbild"></div>
-    <p class="beschreibung">Jeden Monat ein neues Geschmackserlebnis – von Chili bis Spekulatius. Ideal für Genießer!</p>
-    <p class="preis">4 CHF</p>
-  </section>
+    function addToCart(name, price) {
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
+      updateCart();
+    }
 
-  <section class="einzelansicht" id="editionklein">
-    <h2>Monatsedition (100g)</h2>
-    <div class="produktbild"></div>
-    <p class="beschreibung">Die monatliche Spezialität in der handlichen 100g-Größe. Monatlich wechselnde Sorten!</p>
-    <p class="preis">2.5 CHF</p>
-  </section>
-</main>
+    function updateCart() {
+      const cartItems = document.getElementById("cartItems");
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        cartItems.innerHTML += `
+          <div class="warenkorb-item">
+            <span>${item.qty}× ${item.name}</span>
+            <span>${(item.price * item.qty).toFixed(2)} CHF 
+              <button onclick="removeItem('${item.name}')">✕</button>
+            </span>
+          </div>`;
+      });
+      document.getElementById("total").innerText = "Total: " + total.toFixed(2) + " CHF";
+    }
 
-<footer>
-  &copy; 2025 Chalklet. Alle Rechte vorbehalten.
-</footer>
+    function removeItem(name) {
+      const index = cart.findIndex(item => item.name === name);
+      if (index !== -1) {
+        cart.splice(index, 1);
+        updateCart();
+      }
+    }
 
-<script>
-  function toggleMenu() {
-    const menu = document.getElementById("menu");
-    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-  }
-
-  function showSection(sectionId) {
-    document.getElementById("home").style.display = "block";
-    document.querySelectorAll(".einzelansicht").forEach(el => el.style.display = "none");
-    window.scrollTo(0, 0);
-  }
-
-  function showProduct(productId) {
-    document.getElementById("home").style.display = "none";
-    document.querySelectorAll(".einzelansicht").forEach(el => el.style.display = "none");
-    document.getElementById(productId).style.display = "block";
-    window.scrollTo(0, 0);
-  }
-</script>
+    function checkout() {
+      alert("Zahlungssystem kommt hier hin – z. B. Stripe, PayPal oder Twint.");
+    }
+  </script>
 
 </body>
 </html>

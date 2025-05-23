@@ -80,6 +80,22 @@
       font-weight: bold;
       margin-top: 10px;
     }
+
+    /* Instagram Icon Styling */
+    .social-icon {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      z-index: 1000;
+    }
+
+    .social-icon img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
@@ -133,15 +149,21 @@
     <div id="cartItems"></div>
     <div class="gesamt" id="total">Total: 0 CHF</div>
     <div style="text-align: right; margin-top: 15px;">
-  <a href="https://buy.stripe.com/28EeVc22ndEYcSjd32b3q00" target="_blank">
-    <button>Spenden</button>
+      <a href="https://buy.stripe.com/28EeVc22ndEYcSjd32b3q00" target="_blank">
+        <button>Spenden</button>
+      </a>
+      <div style="text-align: right; margin-top: 15px;">
+        <button onclick="goToThankYou()">Jetzt kaufen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instagram Icon -->
+  <a href="https://www.instagram.com/chalklet_gmbh/" target="_blank" class="social-icon">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
   </a>
-    <div style="text-align: right; margin-top: 15px;">
-  <button onclick="goToThankYou()">Jetzt kaufen</button>
-</div>
 
-
-  <!-- Warenkorb Script -->
+  <!-- Scripts -->
   <script>
     const cart = [];
 
@@ -180,20 +202,12 @@
       }
     }
 
-    function checkout() {
-      alert("Zahlungssystem kommt hier hin – z. B. Stripe, PayPal oder Twint.");
+    function goToThankYou() {
+      cart.length = 0;
+      updateCart();
+      window.location.href = "thankyou.html";
     }
   </script>
 
-<script>
-  function goToThankYou() {
-    // Leert den Warenkorb (optional)
-    cart.length = 0;
-    updateCart();
-    // Leitet zur Dankesseite weiter
-    window.location.href = "thankyou.html";
-  }
-</script>
-    
 </body>
 </html>

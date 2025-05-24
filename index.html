@@ -35,6 +35,10 @@
       padding: 15px;
       text-align: center;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    .produkt:hover {
+      transform: scale(1.02);
     }
     .produkt img {
       width: 100%;
@@ -81,79 +85,29 @@
       margin-top: 10px;
     }
 
-    /* Instagram Icon Styling */
-    .social-icon {
+    /* Sticky Cart Icon */
+    #floatingCart {
       position: fixed;
       bottom: 20px;
-      left: 20px;
-      width: 40px;
-      height: 40px;
+      right: 20px;
+      background-color: #593c1f;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 1.2em;
+      cursor: pointer;
       z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    .social-icon img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
+    /* Flying image animation */
+    .fly-img {
+      position: fixed;
+      width: 80px;
+      z-index: 999;
+      transition: all 1s ease-in-out;
+      pointer-events: none;
     }
-    .social-icon {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 1000;
-}
-
-.social-icon a img {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.social-icon a img:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-    :root {
-  --bg-color: #fffdf9;
-  --text-color: #000;
-  --card-bg: #f7f7f7;
-  --button-bg: #593c1f;
-  --button-hover: #402c16;
-}
-
-body.dark-mode {
-  --bg-color: #1e1e1e;
-  --text-color: #fff;
-  --card-bg: #2a2a2a;
-  --button-bg: #7b4e2d;
-  --button-hover: #5c3c22;
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.produkt {
-  background: var(--card-bg);
-  transition: transform 0.2s ease;
-}
-.produkt:hover {
-  transform: scale(1.02);
-}
-
-button {
-  background-color: var(--button-bg);
-  transition: background-color 0.3s;
-}
-button:hover {
-  background-color: var(--button-hover);
-}
   </style>
 </head>
 <body>
@@ -164,44 +118,39 @@ button:hover {
   </header>
 
   <section class="produkt-container">
-    <!-- Classic groß -->
     <div class="produkt">
       <img src="https://i.imgur.com/LR8sat1.png" alt="Classic groß" />
       <h3>Chalklet Classic – 150g</h3>
       <p>Milchschokolade</p>
       <p><strong>3.50 CHF</strong></p>
-      <button onclick="addToCart('Classic 150g', 3.5)">In den Warenkorb</button>
+      <button onclick="addToCart('Classic 150g', 3.5, this)">In den Warenkorb</button>
     </div>
 
-    <!-- Classic klein -->
     <div class="produkt">
       <img src="https://i.imgur.com/rin0TzF.png" alt="Classic klein" />
       <h3>Chalklet Classic – 55g</h3>
       <p>Milchschokolade</p>
       <p><strong>1.25 CHF</strong></p>
-      <button onclick="addToCart('Classic 55g', 1.25)">In den Warenkorb</button>
+      <button onclick="addToCart('Classic 55g', 1.25, this)">In den Warenkorb</button>
     </div>
 
-    <!-- Monatsedition groß -->
     <div class="produkt">
       <img src="https://i.imgur.com/ZNT0HKK.png" alt="Edition groß" />
       <h3>Monatsedition – 150g</h3>
       <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
       <p><strong>4.00 CHF</strong></p>
-      <button onclick="addToCart('Edition 150g', 4)">In den Warenkorb</button>
+      <button onclick="addToCart('Edition 150g', 4, this)">In den Warenkorb</button>
     </div>
 
-    <!-- Monatsedition klein -->
     <div class="produkt">
       <img src="https://i.imgur.com/e9XFs4p.png" alt="Edition klein" />
       <h3>Monatsedition – 55g</h3>
       <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
       <p><strong>1.75 CHF</strong></p>
-      <button onclick="addToCart('Edition 55g', 1.75)">In den Warenkorb</button>
+      <button onclick="addToCart('Edition 55g', 1.75, this)">In den Warenkorb</button>
     </div>
   </section>
 
-  <!-- Warenkorb -->
   <div class="warenkorb">
     <h2>🛒 Warenkorb</h2>
     <div id="cartItems"></div>
@@ -210,22 +159,29 @@ button:hover {
       <a href="https://buy.stripe.com/28EeVc22ndEYcSjd32b3q00" target="_blank">
         <button>Spenden</button>
       </a>
-      <div style="text-align: right; margin-top: 15px;">
-        <button onclick="goToThankYou()">Jetzt kaufen</button>
-      </div>
+      <button onclick="goToThankYou()">Jetzt kaufen</button>
     </div>
   </div>
 
-  <!-- Instagram Icon -->
-  <a href="https://www.instagram.com/chalklet_gmbh/" target="_blank" class="social-icon">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
-  </a>
+  <!-- Sticky Cart Icon -->
+  <div id="floatingCart" onclick="scrollToCart()">
+    🛒 <span id="cartCount">0</span>
+  </div>
 
-  <!-- Scripts -->
   <script>
     const cart = [];
 
-    function addToCart(name, price) {
+    function scrollToCart() {
+      document.querySelector(".warenkorb").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function goToThankYou() {
+      cart.length = 0;
+      updateCart();
+      window.location.href = "thankyou.html";
+    }
+
+    function addToCart(name, price, btn) {
       const existing = cart.find(item => item.name === name);
       if (existing) {
         existing.qty += 1;
@@ -233,14 +189,18 @@ button:hover {
         cart.push({ name, price, qty: 1 });
       }
       updateCart();
+      animateFlyToCart(btn.closest('.produkt').querySelector('img'));
     }
 
     function updateCart() {
       const cartItems = document.getElementById("cartItems");
       cartItems.innerHTML = "";
       let total = 0;
+      let count = 0;
+
       cart.forEach(item => {
         total += item.price * item.qty;
+        count += item.qty;
         cartItems.innerHTML += `
           <div class="warenkorb-item">
             <span>${item.qty}× ${item.name}</span>
@@ -249,7 +209,9 @@ button:hover {
             </span>
           </div>`;
       });
+
       document.getElementById("total").innerText = "Total: " + total.toFixed(2) + " CHF";
+      document.getElementById("cartCount").innerText = count;
     }
 
     function removeItem(name) {
@@ -260,40 +222,38 @@ button:hover {
       }
     }
 
-    function goToThankYou() {
-      cart.length = 0;
-      updateCart();
-      window.location.href = "thankyou.html";
+    function animateFlyToCart(imgElement) {
+      const cartIcon = document.getElementById("floatingCart");
+      const imgRect = imgElement.getBoundingClientRect();
+      const cartRect = cartIcon.getBoundingClientRect();
+
+      const clone = imgElement.cloneNode(true);
+      clone.classList.add("fly-img");
+      document.body.appendChild(clone);
+
+      clone.style.top = imgRect.top + "px";
+      clone.style.left = imgRect.left + "px";
+
+      setTimeout(() => {
+        clone.style.top = cartRect.top + "px";
+        clone.style.left = cartRect.left + "px";
+        clone.style.opacity = 0;
+        clone.style.transform = "scale(0.1)";
+      }, 10);
+
+      setTimeout(() => document.body.removeChild(clone), 1000);
     }
   </script>
-<!-- Dark Mode Toggle & Easter Egg -->
-<div style="position: fixed; bottom: 20px; left: 20px;">
-  <button onclick="toggleDarkMode()">🌙 / ☀️</button>
-</div>
-
 <script>
-  function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
-  }
-
-  // Set mode from saved preference
-  window.onload = () => {
-    if (localStorage.getItem("darkMode") === "true") {
-      document.body.classList.add("dark-mode");
-    }
-  };
-
-  // Easter Egg: 5x click on logo
   let clickCount = 0;
   const logo = document.querySelector("header img");
+
   logo.addEventListener("click", () => {
     clickCount++;
     if (clickCount === 5) {
-      alert("🎉 Geheime Sorte entdeckt: Lakritz-Pfeffer! 🍬🔥");
-      clickCount = 0;
+      window.location.href = "https://youtu.be/X_8Nh5XfRw0";
     }
-    setTimeout(() => clickCount = 0, 3000); // reset if not fast enough
+    setTimeout(() => clickCount = 0, 2000); // Reset nach 2 Sekunden
   });
 </script>
 </body>

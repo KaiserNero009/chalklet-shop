@@ -5,23 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chalklet Onlineshop</title>
   <style>
+    :root {
+      --bg: #fffdf9;
+      --text: #000;
+      --card: #f7f7f7;
+      --btn: #593c1f;
+      --btn-hover: #402c16;
+      --cart-bg: #f0f0f0;
+    }
+
+    body.dark {
+      --bg: #1e1e1e;
+      --text: #f5f5f5;
+      --card: #2a2a2a;
+      --btn: #8d6b4c;
+      --btn-hover: #b78d69;
+      --cart-bg: #2e2e2e;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background-color: #fffdf9;
+      background-color: var(--bg);
+      color: var(--text);
       margin: 0;
       padding: 20px;
+      transition: all 0.3s ease;
     }
+
     header {
       text-align: center;
       margin-bottom: 30px;
+      position: relative;
     }
+
     header img {
       width: 200px;
       height: auto;
+      cursor: pointer;
     }
+
+    .toggle-dark {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--btn);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
     h1 {
       font-size: 2em;
     }
+
     .produkt-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -29,91 +67,92 @@
       max-width: 1000px;
       margin: 0 auto 40px;
     }
+
     .produkt {
-      background: #f7f7f7;
+      background: var(--card);
       border-radius: 12px;
       padding: 15px;
       text-align: center;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s;
     }
+
     .produkt:hover {
       transform: scale(1.02);
     }
+
     .produkt img {
       width: 100%;
       max-width: 200px;
       height: auto;
       margin-bottom: 10px;
     }
-    .produkt h3 {
-      margin: 10px 0 5px;
-    }
-    .produkt p {
-      margin: 5px 0;
-    }
+
     button {
       padding: 8px 12px;
       margin-top: 10px;
-      background-color: #593c1f;
+      background-color: var(--btn);
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
+
     button:hover {
-      background-color: #402c16;
+      background-color: var(--btn-hover);
     }
+
     .warenkorb {
       max-width: 600px;
       margin: 0 auto;
       padding: 20px;
-      background-color: #f0f0f0;
+      background-color: var(--cart-bg);
       border-radius: 10px;
     }
+
     .warenkorb h2 {
       text-align: center;
     }
+
     .warenkorb-item {
       display: flex;
       justify-content: space-between;
       margin-bottom: 10px;
     }
+
     .gesamt {
       text-align: right;
       font-weight: bold;
       margin-top: 10px;
     }
 
-    /* Sticky Cart Icon */
-    #floatingCart {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #593c1f;
-      color: white;
-      padding: 12px 16px;
-      border-radius: 999px;
-      font-size: 1.2em;
-      cursor: pointer;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    .socials {
+      text-align: center;
+      margin-top: 40px;
     }
 
-    /* Flying image animation */
-    .fly-img {
-      position: fixed;
-      width: 80px;
-      z-index: 999;
-      transition: all 1s ease-in-out;
-      pointer-events: none;
+    .socials a {
+      display: inline-block;
+      margin: 0 10px;
+    }
+
+    .socials img {
+      width: 32px;
+      height: 32px;
+      transition: transform 0.3s;
+    }
+
+    .socials img:hover {
+      transform: scale(1.2);
     }
   </style>
 </head>
 <body>
 
   <header>
-    <img src="https://i.imgur.com/3EbDo4j.png" alt="Chalklet Logo" />
+    <img id="logo" src="https://i.imgur.com/3EbDo4j.png" alt="Chalklet Logo" />
+    <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
     <h1>Zum Schreiben zu schade, zum Naschen perfekt.</h1>
   </header>
 
@@ -123,7 +162,7 @@
       <h3>Chalklet Classic – 150g</h3>
       <p>Milchschokolade</p>
       <p><strong>3.50 CHF</strong></p>
-      <button onclick="addToCart('Classic 150g', 3.5, this)">In den Warenkorb</button>
+      <button onclick="addToCart('Classic 150g', 3.5)">In den Warenkorb</button>
     </div>
 
     <div class="produkt">
@@ -131,7 +170,7 @@
       <h3>Chalklet Classic – 55g</h3>
       <p>Milchschokolade</p>
       <p><strong>1.25 CHF</strong></p>
-      <button onclick="addToCart('Classic 55g', 1.25, this)">In den Warenkorb</button>
+      <button onclick="addToCart('Classic 55g', 1.25)">In den Warenkorb</button>
     </div>
 
     <div class="produkt">
@@ -139,7 +178,7 @@
       <h3>Monatsedition – 150g</h3>
       <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
       <p><strong>4.00 CHF</strong></p>
-      <button onclick="addToCart('Edition 150g', 4, this)">In den Warenkorb</button>
+      <button onclick="addToCart('Edition 150g', 4)">In den Warenkorb</button>
     </div>
 
     <div class="produkt">
@@ -147,7 +186,7 @@
       <h3>Monatsedition – 55g</h3>
       <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
       <p><strong>1.75 CHF</strong></p>
-      <button onclick="addToCart('Edition 55g', 1.75, this)">In den Warenkorb</button>
+      <button onclick="addToCart('Edition 55g', 1.75)">In den Warenkorb</button>
     </div>
   </section>
 
@@ -163,25 +202,16 @@
     </div>
   </div>
 
-  <!-- Sticky Cart Icon -->
-  <div id="floatingCart" onclick="scrollToCart()">
-    🛒 <span id="cartCount">0</span>
+  <div class="socials">
+    <a href="https://www.instagram.com/chalklet_gmbh/" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+    </a>
   </div>
 
   <script>
     const cart = [];
 
-    function scrollToCart() {
-      document.querySelector(".warenkorb").scrollIntoView({ behavior: "smooth" });
-    }
-
-    function goToThankYou() {
-      cart.length = 0;
-      updateCart();
-      window.location.href = "thankyou.html";
-    }
-
-    function addToCart(name, price, btn) {
+    function addToCart(name, price) {
       const existing = cart.find(item => item.name === name);
       if (existing) {
         existing.qty += 1;
@@ -189,18 +219,14 @@
         cart.push({ name, price, qty: 1 });
       }
       updateCart();
-      animateFlyToCart(btn.closest('.produkt').querySelector('img'));
     }
 
     function updateCart() {
       const cartItems = document.getElementById("cartItems");
       cartItems.innerHTML = "";
       let total = 0;
-      let count = 0;
-
       cart.forEach(item => {
         total += item.price * item.qty;
-        count += item.qty;
         cartItems.innerHTML += `
           <div class="warenkorb-item">
             <span>${item.qty}× ${item.name}</span>
@@ -209,9 +235,7 @@
             </span>
           </div>`;
       });
-
       document.getElementById("total").innerText = "Total: " + total.toFixed(2) + " CHF";
-      document.getElementById("cartCount").innerText = count;
     }
 
     function removeItem(name) {
@@ -222,39 +246,27 @@
       }
     }
 
-    function animateFlyToCart(imgElement) {
-      const cartIcon = document.getElementById("floatingCart");
-      const imgRect = imgElement.getBoundingClientRect();
-      const cartRect = cartIcon.getBoundingClientRect();
-
-      const clone = imgElement.cloneNode(true);
-      clone.classList.add("fly-img");
-      document.body.appendChild(clone);
-
-      clone.style.top = imgRect.top + "px";
-      clone.style.left = imgRect.left + "px";
-
-      setTimeout(() => {
-        clone.style.top = cartRect.top + "px";
-        clone.style.left = cartRect.left + "px";
-        clone.style.opacity = 0;
-        clone.style.transform = "scale(0.1)";
-      }, 10);
-
-      setTimeout(() => document.body.removeChild(clone), 1000);
+    function goToThankYou() {
+      cart.length = 0;
+      updateCart();
+      window.location.href = "thankyou.html";
     }
+
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    // Easter Egg: 5x Klick aufs Logo
+    let clickCount = 0;
+    document.getElementById("logo").addEventListener("click", () => {
+      clickCount++;
+      if (clickCount === 5) {
+        window.location.href = "https://youtu.be/X_8Nh5XfRw0";
+      }
+      setTimeout(() => clickCount = 0, 2000);
+    });
   </script>
-<script>
-  let clickCount = 0;
-  const logo = document.querySelector("header img");
 
-  logo.addEventListener("click", () => {
-    clickCount++;
-    if (clickCount === 5) {
-      window.location.href = "https://youtu.be/X_8Nh5XfRw0";
-    }
-    setTimeout(() => clickCount = 0, 2000); // Reset nach 2 Sekunden
-  });
-</script>
 </body>
 </html>

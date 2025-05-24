@@ -75,6 +75,7 @@
       text-align: center;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
       transition: transform 0.3s;
+      position: relative;
     }
 
     .produkt:hover {
@@ -127,24 +128,46 @@
       margin-top: 10px;
     }
 
-    .socials {
-      text-align: center;
-      margin-top: 40px;
+    .floating-cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--btn);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 50px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 999;
     }
 
-    .socials a {
-      display: inline-block;
-      margin: 0 10px;
+    .floating-cart:hover {
+      background-color: var(--btn-hover);
     }
 
-    .socials img {
-      width: 32px;
-      height: 32px;
+    .socials-sticky {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 999;
+    }
+
+    .socials-sticky img {
+      width: 36px;
+      height: 36px;
       transition: transform 0.3s;
     }
 
-    .socials img:hover {
+    .socials-sticky img:hover {
       transform: scale(1.2);
+    }
+
+    .fly-img {
+      position: fixed;
+      width: 100px;
+      z-index: 1000;
+      pointer-events: none;
+      transition: transform 0.7s ease-in-out, opacity 0.7s;
     }
   </style>
 </head>
@@ -162,7 +185,7 @@
       <h3>Chalklet Classic – 150g</h3>
       <p>Milchschokolade</p>
       <p><strong>3.50 CHF</strong></p>
-      <button onclick="addToCart('Classic 150g', 3.5)">In den Warenkorb</button>
+      <button onclick="addToCart(this, 'Classic 150g', 3.5)">In den Warenkorb</button>
     </div>
 
     <div class="produkt">
@@ -170,7 +193,7 @@
       <h3>Chalklet Classic – 55g</h3>
       <p>Milchschokolade</p>
       <p><strong>1.25 CHF</strong></p>
-      <button onclick="addToCart('Classic 55g', 1.25)">In den Warenkorb</button>
+      <button onclick="addToCart(this, 'Classic 55g', 1.25)">In den Warenkorb</button>
     </div>
 
     <div class="produkt">
@@ -178,7 +201,7 @@
       <h3>Monatsedition – 150g</h3>
       <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
       <p><strong>4.00 CHF</strong></p>
-      <button onclick="addToCart('Edition 150g', 4)">In den Warenkorb</button>
+      <button onclick="addToCart(this, 'Edition 150g', 4)">In den Warenkorb</button>
     </div>
 
     <div class="produkt">
@@ -186,7 +209,7 @@
       <h3>Monatsedition – 55g</h3>
       <p><em>z. B. Himbeere, Zimt, Chili…</em></p>
       <p><strong>1.75 CHF</strong></p>
-      <button onclick="addToCart('Edition 55g', 1.75)">In den Warenkorb</button>
+      <button onclick="addToCart(this, 'Edition 55g', 1.75)">In den Warenkorb</button>
     </div>
   </section>
 
@@ -202,7 +225,11 @@
     </div>
   </div>
 
-  <div class="socials">
+  <!-- Floating Warenkorb -->
+  <div class="floating-cart" onclick="scrollToCart()">🛒 <span id="cartTotalSmall">0 CHF</span></div>
+
+  <!-- Sticky Instagram -->
+  <div class="socials-sticky">
     <a href="https://www.instagram.com/chalklet_gmbh/" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
     </a>
@@ -211,7 +238,7 @@
   <script>
     const cart = [];
 
-    function addToCart(name, price) {
+    function addToCart(button, name, price) {
       const existing = cart.find(item => item.name === name);
       if (existing) {
         existing.qty += 1;
@@ -219,6 +246,7 @@
         cart.push({ name, price, qty: 1 });
       }
       updateCart();
+      flyToCart(button);
     }
 
     function updateCart() {
@@ -236,6 +264,7 @@
           </div>`;
       });
       document.getElementById("total").innerText = "Total: " + total.toFixed(2) + " CHF";
+      document.getElementById("cartTotalSmall").innerText = total.toFixed(2) + " CHF";
     }
 
     function removeItem(name) {
@@ -252,12 +281,15 @@
       window.location.href = "thankyou.html";
     }
 
-    // Dark Mode Toggle
+    function scrollToCart() {
+      document.querySelector(".warenkorb").scrollIntoView({ behavior: "smooth" });
+    }
+
     function toggleDarkMode() {
       document.body.classList.toggle("dark");
     }
 
-    // Easter Egg: 5x Klick aufs Logo
+    // Easter Egg
     let clickCount = 0;
     document.getElementById("logo").addEventListener("click", () => {
       clickCount++;
@@ -266,7 +298,28 @@
       }
       setTimeout(() => clickCount = 0, 2000);
     });
+
+    // Fluganimation
+    function flyToCart(button) {
+      const img = button.parentElement.querySelector("img");
+      const flyImg = img.cloneNode();
+      const rect = img.getBoundingClientRect();
+      flyImg.style.left = rect.left + "px";
+      flyImg.style.top = rect.top + "px";
+      flyImg.classList.add("fly-img");
+      document.body.appendChild(flyImg);
+
+      setTimeout(() => {
+        flyImg.style.transform = "translate(300px, 500px) scale(0.1)";
+        flyImg.style.opacity = "0";
+      }, 10);
+
+      setTimeout(() => {
+        document.body.removeChild(flyImg);
+      }, 700);
+    }
   </script>
 
 </body>
 </html>
+
